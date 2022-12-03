@@ -1,5 +1,11 @@
 const fs = require("fs");
 
+const getUsers = () => {
+  const data = fs.readFileSync(__dirname + "/../users.json");
+  const users = JSON.parse(data);
+  return users;
+};
+
 const getRandomUsers = (req, res) => {
   res.send("all random users");
 };
@@ -9,28 +15,25 @@ const getRandomUser = (req, res) => {
 };
 
 const createRandomUser = (req, res) => {
-  const { id, gender, name, contact, address, photoUrl } = req.body;
-  if ((id, gender, name, contact, address, photoUrl)) {
-    const user = { id, gender, name, contact, address, photoUrl };
-    fs.writeFile(
-      "../users/users.json",
-      {
-        id,
-        gender,
-        name,
-        contact,
-        address,
-        photoUrl,
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
+  const user = req.body;
+  const { id, gender, name, contact, address, photoUrl } = user;
+  if (!id || !gender || !name || !contact || !address || !photoUrl) {
+    res.send("Missing properties or values");
+  } else {
+    const users = getUsers();
+    users.push(user);
+    fs.writeFileSync("users.json", JSON.stringify(users));
+    res.status(200).send("Success");
   }
 };
 
 const updateRandomUser = (req, res) => {
-  res.send('update random user data');
+  res.send("update random user data");
 };
 
-module.exports = { getRandomUsers, getRandomUser, createRandomUser, updateRandomUser };
+module.exports = {
+  getRandomUsers,
+  getRandomUser,
+  createRandomUser,
+  updateRandomUser,
+};
