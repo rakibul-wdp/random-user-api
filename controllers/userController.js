@@ -1,14 +1,18 @@
 const fs = require("fs");
 
+const getRandomUsers = (req, res) => {
+  res.send("all random users");
+};
+
 const getRandomUser = (req, res) => {
   res.send("Hello function user");
 };
 
 const createRandomUser = (req, res) => {
-  console.log(req.body);
   const { id, gender, name, contact, address, photoUrl } = req.body;
   if ((id, gender, name, contact, address, photoUrl)) {
-    fs.appendFile(
+    const user = { id, gender, name, contact, address, photoUrl };
+    fs.writeFile(
       "../users/users.json",
       {
         id,
@@ -25,4 +29,4 @@ const createRandomUser = (req, res) => {
   }
 };
 
-module.exports = { getRandomUser, createRandomUser };
+module.exports = { getRandomUsers, getRandomUser, createRandomUser };
