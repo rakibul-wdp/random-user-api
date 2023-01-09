@@ -29,4 +29,8 @@ const createRandomUser = (req, res) => {
   }
 };
 
-module.exports = { getRandomUsers, getRandomUser, createRandomUser };
+const updateRandomUser = (req, res) => {
+  res.send('update random user data');
+};
+
+module.exports = { getRandomUsers, getRandomUser, createRandomUser, updateRandomUser };
