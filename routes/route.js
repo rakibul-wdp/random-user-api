@@ -6,12 +6,14 @@ const {
   getRandomUsers,
   updateRandomUser,
   bulkUpdate,
+  deleteUser,
 } = require("../controllers/userController");
 
 route.get("/randoms", getRandomUsers);
 route.get("/random", getRandomUser);
 route.post("/save", createRandomUser);
-route.post("/update", updateRandomUser);
-route.post("/bulkupdate", bulkUpdate);
+route.patch("/update", updateRandomUser);
+route.patch("/bulkupdate", bulkUpdate);
+route.delete("/delete", deleteUser);
 
 module.exports = route;

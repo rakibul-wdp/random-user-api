@@ -51,7 +51,7 @@ const updateRandomUser = (req, res) => {
 
   const foundUser = users.find(
     (user) => parseInt(user.id) === parseInt(userId)
-  )
+  );
 
   if (!foundUser) {
     res.send("no user found");
@@ -94,12 +94,35 @@ const bulkUpdate = (req, res) => {
   }
 
   res.send("found");
-}
+};
+
+const deleteUser = (req, res) => {
+  const userId = req.query.id;
+  const users = getUsers();
+  const parsedId = JSON.parse(req.query.id);
+
+  if (typeof parsedId == "object") {
+    return res.send("Please provide a number in the query");
+  }
+
+  const foundUserIndex = users.findIndex(
+    (user) => parseInt(user.id) == parseInt(userId)
+  );
+
+  if (foundUserIndex !== -1) {
+    users.splice(foundUserIndex, 1);
+    fs.writeFileSync("users.json", JSON.stringify(users));
+    res.status(200).send("success");
+  } else {
+    res.send("no users found");
+  }
+};
 
 module.exports = {
   getRandomUsers,
   getRandomUser,
   createRandomUser,
   updateRandomUser,
-  bulkUpdate
+  bulkUpdate,
+  deleteUser,
 };
