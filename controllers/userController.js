@@ -7,7 +7,17 @@ const getUsers = () => {
 };
 
 const getRandomUsers = (req, res) => {
-  res.send("all random users");
+  if (req.query.num === undefined) {
+    const users = getUsers();
+    console.log("hit", users);
+    res.send(users);
+  } else {
+    const users = getUsers();
+    const usersToBeShown = req.query.num;
+    const result = users.splice(0, usersToBeShown);
+    console.log("hit with query");
+    res.send(result);
+  }
 };
 
 const getRandomUser = (req, res) => {
