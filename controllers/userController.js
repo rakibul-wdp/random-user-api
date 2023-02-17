@@ -40,7 +40,40 @@ const createRandomUser = (req, res) => {
 };
 
 const updateRandomUser = (req, res) => {
-  res.send("update random user data");
+  console.log(typeof JSON.parse(req.body.id));
+  const newInfo = req.body;
+  const userId = req.query.id;
+  const users = getUsers();
+  const parsedId = JSON.parse(req.query.id);
+
+  if (typeof parsedId == "object") {
+    return res.send("provide a number in the query");
+  }
+
+  const foundUser = users.find(
+    (user) => parseInt(user.id) === parseInt(userId)
+  )
+
+  if (!foundUser) {
+    res.send("no user found");
+  } else {
+    if (newInfo.id) {
+      foundUser.id = newInfo.id;
+    } else if (newInfo.gender) {
+      foundUser.gender = newInfo.gender;
+    } else if (newInfo.name) {
+      foundUser.name = newInfo.name;
+    } else if (newInfo.contact) {
+      foundUser.contact = newInfo.contact;
+    } else if (newInfo.address) {
+      foundUser.address = newInfo.address;
+    } else if (newInfo.photoUrl) {
+      foundUser.photoUrl = newInfo.photoUrl;
+    }
+  }
+
+  fs.writeFileSync(__dirname + "/../users.json", JSON.stringify(users));
+  res.status(200).send("success");
 };
 
 module.exports = {
