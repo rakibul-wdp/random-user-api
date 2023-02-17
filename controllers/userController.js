@@ -40,7 +40,6 @@ const createRandomUser = (req, res) => {
 };
 
 const updateRandomUser = (req, res) => {
-  console.log(typeof JSON.parse(req.body.id));
   const newInfo = req.body;
   const userId = req.query.id;
   const users = getUsers();
@@ -76,9 +75,31 @@ const updateRandomUser = (req, res) => {
   res.status(200).send("success");
 };
 
+const bulkUpdate = (req, res) => {
+  const userIDs = req.body.ids;
+  const users = getUsers();
+
+  for (let i = 0; i < userIDs.length; i++) {
+    const userID = userIDs[i];
+
+    const foundUser = users.find(
+      (user) => parseInt(user.id) === parseInt(userID)
+    );
+
+    if (!foundUser) {
+      return res.send("Only provide the IDs that exists in the json file");
+    }
+
+    console.log(userID, foundUser);
+  }
+
+  res.send("found");
+}
+
 module.exports = {
   getRandomUsers,
   getRandomUser,
   createRandomUser,
   updateRandomUser,
+  bulkUpdate
 };
