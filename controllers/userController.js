@@ -21,7 +21,9 @@ const getRandomUsers = (req, res) => {
 };
 
 const getRandomUser = (req, res) => {
-  res.send("Hello function user");
+  const users = getUsers();
+  const randomUser = users[Math.floor(Math.random() * users.length)];
+  res.send(randomUser);
 };
 
 const createRandomUser = (req, res) => {
